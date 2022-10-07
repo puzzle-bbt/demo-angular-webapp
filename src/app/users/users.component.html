@@ -1,4 +1,13 @@
 <p>User List</p>
 <a routerLink="detail">User Detail</a> | <a routerLink="form">User Formular</a>
 
+<div *ngFor="let user of users$ | async">
+  <div>{{user.id}} : {{user.firstname}} {{user.lastname}}</div>
+</div>
+<hr>
+
+<pre>
+{{users$ | async | json}}
+</pre>
+
 <router-outlet></router-outlet>
