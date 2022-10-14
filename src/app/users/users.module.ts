@@ -7,6 +7,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UsersService } from './users.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { UsersService } from './users.service';
   imports: [
     CommonModule,
     HttpClientModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class UsersModule { }

@@ -1,0 +1,11 @@
+.user-formular {
+  display: grid;
+  grid-template-columns: 20% 50%;
+  grid-gap: 10px;
+}
+
+.user-formular-buttons {
+  display: grid;
+  grid-column: 1 / span 2;
+  justify-items: center;
+}
