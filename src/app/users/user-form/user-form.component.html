@@ -15,16 +15,11 @@
 
   <div class="user-formular-buttons">
     <button type="button" [disabled]="!userForm.valid" (click)="save()">speichern</button>
-    <button type="button" [disabled]="!userForm.valid" (click)="setValueToFritz()">setValueToFritz</button>
-    <button type="button" [disabled]="!userForm.valid" (click)="patchValueToTheodor()">patchValueToTheodor</button>
+    <button type="button" (click)="setValueToFritz()">setValueToFritz</button>
+    <button type="button" (click)="patchValueToTheodor()">patchValueToTheodor</button>
     <button type="button" routerLink="/users">abbrechen</button>
   </div>
 </form>
-
-
-<div>Form  without FromGroup:</div>
-<div><label for="firstname2">Vorname</label><input id="firstname2" type="text" [formControl]="firstname2"></div>
-<div><label for="lastname2">Nachname</label><input id="lastname2" type="text" [formControl]="lastname2"></div>
 
 <pre>
 live form info:

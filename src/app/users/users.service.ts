@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: number|null;
@@ -17,13 +18,19 @@ export class UsersService {
   constructor(private httpClient: HttpClient) { }
 
   getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>('http://localhost:4200/api/users').pipe(
+    return this.httpClient.get<User[]>(`${environment.apiUri}/users`).pipe(
       tap(data => console.log(data))
     );
   }
 
-  saveUser(user: User) {
-    console.log('save user:', user);
+  getUser(id: number): Observable<User> {
+    return this.httpClient.get<User>(`${environment.apiUri}/users/${id}`).pipe(
+      tap(data => console.log(data))
+    );
+  }
+
+  saveUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(`${environment.apiUri}/users`, user);
   }
 
   getInitUser(): User {

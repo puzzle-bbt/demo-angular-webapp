@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User, UsersService } from '../users.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { getNumberOrNull } from '../core/common';
 
 @Component({
   selector: 'app-user-form',
@@ -9,33 +12,62 @@ import { User, UsersService } from '../users.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormComponent implements OnInit {
+  user$!: Observable<User>;
 
   userForm = new FormGroup({
-    firstname: new FormControl<string>('Emil',
+    firstname: new FormControl<string>('',
       [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
-    lastname: new FormControl<string>('Karlen',
+    lastname: new FormControl<string>('',
       [Validators.required, Validators.minLength(2), Validators.maxLength(20)]),
-    age: new FormControl<number>(35),
-    email: new FormControl<string>('emil.karlen@example.com',
+    age: new FormControl<number>(0),
+    email: new FormControl<string>('',
       [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
   });
 
-  // Form  without FromGroup:
-  firstname2 = new FormControl<string>('Emil');
-  lastname2 = new FormControl<string>('Karlen');
-
-  constructor(private userService: UsersService) { }
+  constructor(
+    private userService: UsersService,
+    private route: ActivatedRoute,
+    private router: Router
+    ) {}
 
   ngOnInit(): void {
-    this.firstname2.setValue('Emilia'); // example
+    // get User
+    this.user$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const userId = getNumberOrNull(params.get('id'));
+        if (userId) {
+          return this.userService.getUser(userId);
+        } else {
+          return of<User>(this.userService.getInitUser());
+        }
+      })
+    );
+
+    // update FormGroup
+    this.user$.subscribe(user => {
+      const {id, ...restUser} = user;
+      this.userForm.setValue(restUser);
+    });
   }
 
   save() {
-    const user = {
-      ...this.userService.getInitUser(),
-      ...this.userForm.value,
-    } as User;
-    this.userService.saveUser(user);
+    this.user$.pipe(
+      map(user => {
+        return {
+          ...user,
+          ...this.userForm.value,
+        } as User;
+      })
+    ).subscribe(user =>
+      this.userService.saveUser(user).subscribe({
+        next: () => this.router.navigate(['/users']),
+        error: () => {
+          console.log('Can not save this user: ', user);
+          // TODO: put a message to the user or throw a error
+          return new Error('ups sommething happend');
+        }
+      })
+    );
   }
 
   patchValueToTheodor() {

@@ -9,11 +9,11 @@ const routes: Routes = [
     path: '', component: UsersComponent,
     // children: [
     //   { path: 'detail', component: UserDetailComponent },
-    //   { path: 'form', component: UserFormComponent },
+    //   { path: 'form/:id', component: UserFormComponent },
     // ]
   },
   { path: 'detail', component: UserDetailComponent },
-  { path: 'form', component: UserFormComponent },
+  { path: 'form/:id', component: UserFormComponent },
   { path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
