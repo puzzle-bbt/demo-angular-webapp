@@ -1,15 +1,15 @@
 <p>User List</p>
-<a routerLink="detail">User Detail</a> | <a routerLink="form/new">New User</a>
 
 <div *ngFor="let user of users$ | async">
-  <div>{{user.id}} : {{user.firstname}} {{user.lastname}}
-    <button [routerLink]="['/users/form', user.id]">Edit</button>
+  <div>{{user.id}} : <a [routerLink]="['detail', user.id]">{{user.firstname}} {{user.lastname}}</a>
+    <button [routerLink]="['form', user.id]">Edit</button>
   </div>
 </div>
-<hr>
+
+<button routerLink="form/new">New User</button>
+
+<router-outlet></router-outlet>
 
 <pre>
 {{users$ | async | json}}
 </pre>
-
-<router-outlet></router-outlet>

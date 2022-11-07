@@ -1,2 +1,12 @@
-<p>User Detailpage</p>
-<a routerLink="/users">back</a>
+<div>
+  <h4>User Detailpage</h4>
+
+  <div *ngIf="user$ | async as user">
+    <div>ID: {{user.id}}</div>
+    <div>Name: {{user.firstname}} {{user.lastname}}</div>
+    <div>Age: {{user.age}}</div>
+    <div>E-Mail: {{user.email}}</div>
+  </div>
+
+  <a routerLink="/users">back</a>
+</div>
