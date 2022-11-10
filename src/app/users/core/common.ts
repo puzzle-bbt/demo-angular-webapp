@@ -1,6 +1,6 @@
 export function getNumberOrNull(str: string|null): number|null {
   if (str === null
-    || str.trim() === '') {
+    || str.toString().trim() === '') {
     return null;
   }
   const number: number = parseInt(str, 10);
